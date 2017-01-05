@@ -58,7 +58,7 @@ for i = 1:1:numNodes
     ndist = [];
     for j = 1:1:length(nodes)
         n = nodes(j);
-        tmp = sqrt((n.coord(1)-q_rand(1))^2 + (n.coord(2)-q_rand(2))^2);
+        tmp = dist(n.coord, q_rand);
         ndist = [ndist tmp];
     end
     [val, idx] = min(ndist);
@@ -76,7 +76,7 @@ for i = 1:1:numNodes
         r = 60;
         neighbor_count = 1;
         for j = 1:1:length(nodes)
-            if noCollision(nodes(j).coord, q_new.coord, obstacle) && ((nodes(j).coord(1)-q_new.coord(1))^2 + (nodes(j).coord(2)-q_new.coord(2))^2 - r^2) <= 0
+            if noCollision(nodes(j).coord, q_new.coord, obstacle) && dist(nodes(j).coord, q_new.coord) <= r
                 q_nearest(neighbor_count).coord = nodes(j).coord;
                 q_nearest(neighbor_count).cost = nodes(j).cost;
                 neighbor_count = neighbor_count+1;
@@ -118,7 +118,6 @@ for j = 1:1:length(nodes)
 end
 
 % Search backwards from goal to start to find the optimal least cost path
-
 [val, idx] = min(D);
 q_final = nodes(idx);
 q_goal.parent = idx;
